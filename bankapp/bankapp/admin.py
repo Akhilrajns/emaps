@@ -37,7 +37,7 @@ class PincodeAdmin(admin.ModelAdmin):
 
 
 class LoanDetailsAdmin(admin.ModelAdmin):
-    list_display = ('id', 'job_no', 'job_status', 'applicant_type', 'customer_name')
+    list_display = ('customer_name', 'job_no', 'job_status', 'applicant_type')
 
     fieldsets = (
         (_('Personal info'), {'fields': ('job_no', 'loan_account_no', 'loan_type', 'job_status', 'applicant_type')}),
