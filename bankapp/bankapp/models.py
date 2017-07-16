@@ -157,8 +157,8 @@ class Branch(models.Model):
 
 class LoanDetail(models.Model):
 	"""docstring for LoanDetails"""
-	job_no = models.IntegerField('Job No', null=False)
-	loan_account_no = models.IntegerField('Loan account No', null=False)
+	job_no = models.CharField('Job No', max_length=128)
+	loan_account_no = models.CharField('Loan account No', max_length=128)
 	loan_type = models.IntegerField('Loan type', choices=LOAN_TYPE, default=1, db_index=True)
 	job_status = models.IntegerField('Job Status', choices=JOB_STATUS, default=1, db_index=True)
 	applicant_type = models.IntegerField('Applicant type', choices=APPLICANT_TYPE, default=1, db_index=True)
@@ -178,7 +178,6 @@ class LoanDetail(models.Model):
 	created_date = models.DateTimeField('Created Date', auto_now_add=True)
 	modified_date = models.DateTimeField('Modified Date', auto_now=True)
 	branch = models.OneToOneField(Branch)
-
 
 
 class LoanUserAddress(models.Model):
