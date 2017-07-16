@@ -17,10 +17,12 @@ from django.conf.urls import url
 from django.contrib import admin
 from bankapp.views import Login, Loan
 from bankapp.generatepdf import MyPDFView
+from home.views import home
 from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
+    url(r'^$', home,  name='index'),
     url(r'^admin/', admin.site.urls),
     url(r'^api/v1/user/login/$', Login.as_view(), name='login'),
     url(r'^api/v1/user/loan/$', Loan.as_view(), name='loan'),

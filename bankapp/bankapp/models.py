@@ -148,8 +148,8 @@ class Branch(models.Model):
 	address = models.TextField('Address', max_length=255, null=True, blank=True)
 	city = models.CharField('City', max_length=128)
 	district = models.CharField('District', max_length=128)
-	pincode = models.IntegerField('Pincode', null=False)
-	ifsc_code = models.IntegerField('IFSC code', null=False)
+	pincode = models.CharField('Pincode', max_length=6)
+	ifsc_code = models.CharField('IFSC code', max_length=12)
 
 	def __str__(self):
 		return '%s - %s - %s' % (self.name, self.address, self.ifsc_code)
@@ -157,8 +157,8 @@ class Branch(models.Model):
 
 class LoanDetail(models.Model):
 	"""docstring for LoanDetails"""
-	job_no = models.CharField('Job No', max_length=128)
-	loan_account_no = models.CharField('Loan account No', max_length=128)
+	job_no = models.CharField('Job No', blank=True, max_length=128)
+	loan_account_no = models.CharField('Loan account No', blank=True, max_length=128)
 	loan_type = models.IntegerField('Loan type', choices=LOAN_TYPE, default=1, db_index=True)
 	job_status = models.IntegerField('Job Status', choices=JOB_STATUS, default=1, db_index=True)
 	applicant_type = models.IntegerField('Applicant type', choices=APPLICANT_TYPE, default=1, db_index=True)
@@ -177,7 +177,10 @@ class LoanDetail(models.Model):
 	political_influence = models.CharField('Political Influenze', max_length=600, null=True, blank=True)
 	created_date = models.DateTimeField('Created Date', auto_now_add=True)
 	modified_date = models.DateTimeField('Modified Date', auto_now=True)
-	branch = models.OneToOneField(Branch)
+	branch = models.ForeignKey('Branch')
+
+	def __str__(self):
+		return self.customer_name
 
 
 class LoanUserAddress(models.Model):
@@ -187,25 +190,25 @@ class LoanUserAddress(models.Model):
 	house_name = models.CharField('House/Flat/Name', max_length=128)
 	street = models.CharField('Street', max_length=128)
 	area = models.CharField('Area/Location', max_length=128)
-	landmark = models.CharField('Landmark', max_length=128)
+	landmark = models.CharField('Landmark', blank=True, max_length=128)
 	city = models.CharField('city', max_length=128)
 	state = models.CharField('State', max_length=128)
-	village = models.CharField('Village', max_length=128)
-	thaluk = models.CharField('Thaluk', max_length=128)
-	survey_no = models.CharField('Survey Number', max_length=128)
+	village = models.CharField('Village', blank=True, max_length=128)
+	thaluk = models.CharField('Thaluk', blank=True, max_length=128)
+	survey_no = models.CharField('Survey Number', blank=True, max_length=128)
 	pincode = models.ForeignKey('Pincode')
-	latitude = models.CharField('Latitude', max_length=128)
-	longitude = models.CharField('Longitude', max_length=128)
+	latitude = models.CharField('Latitude', blank=True, max_length=128)
+	longitude = models.CharField('Longitude', blank=True, max_length=128)
 	telephone = models.CharField('Telephone', max_length=128)
 	mobile_primary = models.CharField('Mobile Primary', max_length=128)
-	mobile_secondary = models.CharField('Mobile Secondary', max_length=128)
-	email = models.CharField('Email', max_length=128)
+	mobile_secondary = models.CharField('Mobile Secondary',blank=True, max_length=128)
+	email = models.CharField('Email', blank=True, max_length=128)
 	created_date = models.DateTimeField('Created Date', auto_now_add=True)
 	modified_date = models.DateTimeField('Modified Date', auto_now=True)
 	verified = models.BooleanField('Verified', default=False, db_index=True)
 
 	def __str__(self):
-		return ''
+		return self.house_name
 
 
 class Review(models.Model):
@@ -215,7 +218,7 @@ class Review(models.Model):
 	modified_date = models.DateTimeField('Modified Date', auto_now=True)
 
 	def __str__(self):
-		return ''
+		return self.reviews
 
 
 class Document(models.Model):
@@ -227,4 +230,6 @@ class Document(models.Model):
 	modified_date = models.DateTimeField('Modified Date', auto_now=True)
 
 	def __str__(self):
-		return ''
+		return self.name
+
+						

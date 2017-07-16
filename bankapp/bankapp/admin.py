@@ -6,19 +6,21 @@ from bankapp.models import LoanDetail, LoanUserAddress, Branch, Review, Document
 class AddressAdmin(admin.TabularInline):
     model = LoanUserAddress
     readonly_fields = ('verified',)
-    max_num = 5
-    extra = 1
-    template = 'template/tabular.html'
+    max_num = 10
+    extra = 0
+    min_num = 1
+    #template = 'template/tabular.html'
 
 class ReviewsAdmin(admin.TabularInline):
     model = Review
     max_num = 50
-    extra = 1
+    extra = 0
 
 class DocumentsAdmin(admin.TabularInline):
     model = Document
     max_num = 10
-    extra = 1
+    extra = 0
+    min_num = 1
 
 class UserAdmin(admin.ModelAdmin):
     fieldsets = (
@@ -51,7 +53,7 @@ class LoanDetailsAdmin(admin.ModelAdmin):
     search_fields = ('job_no', 'applicant_type', 'loan_account_no')
 
     ordering = ('id', )
-    readonly_fields = ('created_date', 'modified_date', )
+    readonly_fields = ('created_date', 'modified_date', ) 
 
 
 admin.site.register(LoanDetail, LoanDetailsAdmin)
