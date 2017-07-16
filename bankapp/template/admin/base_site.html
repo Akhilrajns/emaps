@@ -1,5 +1,5 @@
 {% extends "admin/base.html" %}
-
+{% block branding %}<h1 id="site-name"><a href="/admin">{{ site_title }}</a></h1>{% endblock %}
 {% block title %}{{ title }} | {{ site_title|default:_('Emaps site admin') }}{% endblock %}
 
 {% block extrastyle %}
@@ -9,6 +9,5 @@
 }
 </style>
 {% endblock %}
-
 
 {% block nav-global %}{% endblock %}

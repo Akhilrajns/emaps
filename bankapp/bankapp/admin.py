@@ -60,6 +60,5 @@ admin.site.register(LoanDetail, LoanDetailsAdmin)
 admin.site.register(Branch, BranchAdmin)
 admin.site.register(Pincode, PincodeAdmin)
 admin.site.register(User, UserAdmin)
-
 admin.site.site_title = 'eMaps Admin'
 admin.site.site_header = 'eMaps Admin'
