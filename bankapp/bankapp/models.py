@@ -213,7 +213,7 @@ class LoanUserAddress(models.Model):
 
 class Review(models.Model):
 	loan = models.ForeignKey('LoanDetail')
-	reviews = models.TextField('Reviews', max_length=255, null=True, blank=True)
+	reviews = models.TextField('Reviews', max_length=255, blank=True)
 	created_date = models.DateTimeField('Created Date', auto_now_add=True)
 	modified_date = models.DateTimeField('Modified Date', auto_now=True)
 
@@ -231,5 +231,4 @@ class Document(models.Model):
 
 	def __str__(self):
 		return self.name
-
 						

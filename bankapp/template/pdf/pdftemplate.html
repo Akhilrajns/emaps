@@ -77,7 +77,7 @@ td, th {
   <br/><br/>
   <table>
   <tr>
-    <td colspan="2"><b>Address</b></td>
+    <td colspan="2" align="center"><b>Address</b></td>
   </tr>
   <tr>
     <td><b>House name</b></td>
@@ -133,6 +133,31 @@ td, th {
   </tr>
   </table>
   {% endfor %}
+
+  <br/><br/>
+  <table>
+  {% for key in documents %}
+  <tr>
+    <td colspan="2" align="center"><b>Documents</b></td>
+  </tr>
+  <tr>
+    <td><b>{{key.name}}</b></td>
+    <td><img src="http://emaps.in/{{key.document}}"/></td>
+  </tr>
+  {% endfor %}
+  </table>
+
+  <br/><br/>
+  <table>
+  <tr>
+    <td colspan="2" align="center"><b>Reviews</b></td>
+  </tr>
+  {% for key in reviews %}
+  <tr>
+    <td colspan="2">{{key.reviews}}</td>
+  </tr>
+  {% endfor %}
+  </table>
 
 </body>
 </html>

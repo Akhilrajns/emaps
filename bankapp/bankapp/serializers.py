@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import update_last_login
 from rest_framework.authtoken.models import Token
-from bankapp.models import LoanDetail, User, LoanUserAddress
+from bankapp.models import LoanDetail, User, LoanUserAddress, Document, Review
 from django.core import exceptions
 import django.contrib.auth.password_validation as validators
 from rest_framework import serializers
@@ -29,3 +29,16 @@ class AddressSerializer(serializers.ModelSerializer):
             'thaluk', 'survey_no', 'telephone', 'mobile_primary', 'mobile_secondary', 'email',
             'created_date')
 
+
+class DocumentSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Document
+        fields = ('name', 'document')
+
+
+class ReviewSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Review
+        fields = ('__all__')

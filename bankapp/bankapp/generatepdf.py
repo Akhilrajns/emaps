@@ -1,7 +1,7 @@
 from django.views.generic.base import View
 from wkhtmltopdf.views import PDFTemplateResponse
-from bankapp.models import LoanDetail, LoanUserAddress
-from bankapp.serializers import LoanSerializer, AddressSerializer
+from bankapp.models import LoanDetail, LoanUserAddress, Document, Review
+from bankapp.serializers import LoanSerializer, AddressSerializer, DocumentSerializer, ReviewSerializer
 
 class MyPDFView(View):
     template = 'pdf/pdftemplate.html'  # the template
@@ -11,11 +11,16 @@ class MyPDFView(View):
 
         loan = LoanDetail.objects.get(pk=pk)
         address = LoanUserAddress.objects.filter(loan=loan)
-        # images = ProfileImage.objects.filter(user=user).order_by('id')
-        # image_serializer = s3UrlSerializer(images, many=True)
+        documents = Document.objects.filter(loan=loan)
+        reviews = Review.objects.filter(loan=loan)
+
+
         loanDetail = loan
         serializer = LoanSerializer(loan)
         serializedAddress = AddressSerializer(address, many=True)
+        serializedDocs = DocumentSerializer(documents, many=True)
+        serializedReviews = ReviewSerializer(reviews, many=True)
+        #print(serializedReviews)
         serializerData = serializer.data
         serializerData['sex'] = loanDetail.get_sex_display()
         serializerData['job_type'] = loanDetail.get_job_type_display()
@@ -28,9 +33,8 @@ class MyPDFView(View):
         serializerData['gross_annual_income'] = loanDetail.get_gross_annual_income_display()
 
         serializerData['address'] = serializedAddress.data
-
-
-        print(serializerData)
+        serializerData['documents'] = serializedDocs.data
+        serializerData['reviews'] = serializedReviews.data
 
         try:
             response = PDFTemplateResponse(request=request,
