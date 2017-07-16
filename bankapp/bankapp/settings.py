@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+import pymysql
+pymysql.install_as_MySQLdb()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -25,7 +27,7 @@ SECRET_KEY = 't)*s3&u*l(5tyx+0l)9+2uf_h7tua7p69-dktt+_mc)cw7do_s'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['139.59.22.100', 'emaps.in', '127.0.0.1', '0.0.0.0', 'localhost']
 
 AUTH_USER_MODEL = 'bankapp.User'
 
@@ -81,9 +83,9 @@ WSGI_APPLICATION = 'bankapp.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql', 
-        'NAME': 'bankapp',
+        'NAME': 'emaps',
         'USER': 'root',
-        'PASSWORD': 'root',
+        'PASSWORD': 'Unni@123',
         'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
         'PORT': '3306',
     }
@@ -122,8 +124,13 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
-
+#PROJECT_ROOT = os.path.normpath(os.path.dirname(__file__))
+#STATIC_ROOT = '/root/emaps/bankapp/bankapp/static/'
 STATIC_URL = '/static/'
+
+
+
+
+
