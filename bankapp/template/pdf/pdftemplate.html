@@ -1,13 +1,138 @@
 <!DOCTYPE html>
 <html>
-<body>
+<head>
+<style>
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
 
-<h1>My First Heading</h1>
-<p>My first paragraph.</p>
-    <div class="container">
-        <div class="left-links">
-            <p class="description">&copy;2017 gRPC  a high performance, open-source universal RPC framework</p>
-        </div>
-    </div>
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+    width: 50%;
+}
+</style>
+</head>
+<body>
+<table>
+  <tr>
+    <td><b>Customer Name</b></td>
+    <td>{{ customer_name }}</td>
+  </tr>
+    <tr>
+    <td><b>Father Name</b></td>
+    <td>{{ father_name }}</td>
+  </tr>
+    <tr>
+    <td><b>Mother Name</b></td>
+    <td>{{ mother_name }}</td>
+  </tr>
+    <tr>
+    <td><b>Spouse Name</b></td>
+    <td>{{ spouse_name }}</td>
+  </tr>
+    <tr>
+    <td><b>Loan Account</b></td>
+    <td>{{ loan_account_no }}</td>
+  </tr>
+    <tr>
+    <td><b>Date of birth</b></td>
+    <td>{{ dob }}</td>
+  </tr>
+    <tr>
+    <td><b>Loan type</b></td>
+    <td>{{ loan_type }}</td>
+  </tr>
+    <tr>
+    <td><b>Gender</b></td>
+    <td>{{ sex }}</td>
+  </tr>
+    <tr>
+    <td><b>Job type</b></td>
+    <td>{{ job_type }}</td>
+  </tr>
+    <tr>
+    <td><b>Political influence</b></td>
+    <td>{{ political_influence }}</td>
+  </tr>
+  <tr>
+    <td><b>KYC status</b></td>
+    <td>{{ kyc_status }}</td>
+  </tr>
+  <tr>
+    <td><b>Gross Income</b></td>
+    <td>{{ gross_annual_income }}</td>
+  </tr>
+  <tr>
+    <td><b>Resident</b></td>
+    <td>{{ resident }}</td>
+  </tr>
+  </table>
+  
+
+  {% for key in address %}
+  <br/><br/>
+  <table>
+  <tr>
+    <td colspan="2"><b>Address</b></td>
+  </tr>
+  <tr>
+    <td><b>House name</b></td>
+    <td>{{key.house_name}}</td>
+  </tr>
+  <tr>
+    <td><b>Street</b></td>
+    <td>{{key.street}}</td>
+  </tr>
+  <tr>
+    <td><b>Area</b></td>
+    <td>{{key.area}}</td>
+  </tr>
+  <tr>
+    <td><b>Landmark</b></td>
+    <td>{{key.landmark}}</td>
+  </tr>
+  <tr>
+    <td><b>City</b></td>
+    <td>{{key.city}}</td>
+  </tr>
+  <tr>
+    <td><b>State</b></td>
+    <td>{{key.state}}</td>
+  </tr>
+  <tr>
+    <td><b>Village</b></td>
+    <td>{{key.village}}</td>
+  </tr>
+  <tr>
+    <td><b>Thaluk</b></td>
+    <td>{{key.thaluk}}</td>
+  </tr>
+  <tr>
+    <td><b>Survey No:</b></td>
+    <td>{{key.survey_no}}</td>
+  </tr>
+  <tr>
+    <td><b>Telephone</b></td>
+    <td>{{key.telephone}}</td>
+  </tr>
+  <tr>
+    <td><b>Mobile Primary</b></td>
+    <td>{{key.mobile_primary}}</td>
+  </tr>
+  <tr>
+    <td><b>Mobile Secondary</b></td>
+    <td>{{key.mobile_secondary}}</td>
+  </tr>
+  <tr>
+    <td><b>Email</b></td>
+    <td>{{key.email}}</td>
+  </tr>
+  </table>
+  {% endfor %}
+
 </body>
 </html>

@@ -27,4 +27,4 @@ urlpatterns = [
     url(r'^api/v1/user/login/$', Login.as_view(), name='login'),
     url(r'^api/v1/user/loan/$', Loan.as_view(), name='loan'),
     url(r'^admin/pdf_generate/(?P<pk>[0-9]+)/$', MyPDFView.as_view(), name='pdf_generate')
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
