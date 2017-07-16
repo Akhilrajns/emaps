@@ -136,13 +136,13 @@ td, th {
 
   <br/><br/>
   <table>
-  {% for key in documents %}
   <tr>
     <td colspan="2" align="center"><b>Documents</b></td>
   </tr>
+  {% for key in documents %}
   <tr>
     <td><b>{{key.name}}</b></td>
-    <td><img src="file:////home/akhilraj/bankapp/bankapp/{{key.document}}"/></td>
+    <td><img src="file:///root/emaps/bankapp/bankapp/{{key.document}}"/></td>
   </tr>
   {% endfor %}
   </table>
