@@ -25,9 +25,20 @@ class AddressSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = LoanUserAddress
-        fields = ('address_type', 'house_name', 'street', 'area', 'landmark', 'city', 'state', 'village',
+        fields = ('id', 'address_type', 'house_name', 'street', 'area', 'landmark', 'city', 'state', 'village',
             'thaluk', 'survey_no', 'telephone', 'mobile_primary', 'mobile_secondary', 'email',
-            'created_date')
+            'created_date', 'latitude', 'longitude', 'verified')
+
+
+class LatLongSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(required=True)
+    latitude = serializers.CharField(required=True)
+    longitude = serializers.CharField(required=True)
+    mark_borders = serializers.CharField(required=True)
+
+    class Meta:
+        model = LoanUserAddress
+        fields = ('latitude', 'longitude', 'id', 'mark_borders')
 
 
 class DocumentSerializer(serializers.ModelSerializer):

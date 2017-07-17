@@ -199,6 +199,7 @@ class LoanUserAddress(models.Model):
 	pincode = models.ForeignKey('Pincode')
 	latitude = models.CharField('Latitude', blank=True, max_length=128)
 	longitude = models.CharField('Longitude', blank=True, max_length=128)
+	mark_borders = models.CharField('Mark borders', blank=True, max_length=256)
 	telephone = models.CharField('Telephone', max_length=128)
 	mobile_primary = models.CharField('Mobile Primary', max_length=128)
 	mobile_secondary = models.CharField('Mobile Secondary',blank=True, max_length=128)
