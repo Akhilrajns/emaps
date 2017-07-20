@@ -53,7 +53,7 @@ class UpdateLatLong(APIView, ResponseViewMixin):
 
             return self.jp_response(s_code='HTTP_200_OK', data={'user': serializer.data})
         else:
-            return self.jp_response(s_code='HTTP_200_OK', data={'user': serializer.data})
+            return self.jp_response(s_code='HTTP_200_OK', data={'user': serializer.validated})
 
 
 
