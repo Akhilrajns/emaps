@@ -131,6 +131,12 @@ WKHTMLTOPDF_CMD_OPTIONS = {
 'quiet': True,
 }
 
+CORS_ORIGIN_ALLOW_ALL = True
+
+CORS_ORIGIN_WHITELIST = (
+    '*',
+)
+
 if os.name != 'nt':
     WKHTMLTOPDF_CMD = '/usr/local/bin/wkhtmltopdf'
 else:
