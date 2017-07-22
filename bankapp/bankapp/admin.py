@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.forms import UserCreationForm
 from bankapp.models import LoanDetail, LoanUserAddress, Branch, Review, Document, Pincode, User
 
 class AddressAdmin(admin.TabularInline):
@@ -22,11 +23,33 @@ class DocumentsAdmin(admin.TabularInline):
     extra = 0
     min_num = 1
 
-class UserAdmin(admin.ModelAdmin):
+class AppUserAdmin(UserAdmin):
+    add_form = UserCreationForm
+    list_display = ('id', 'username', 'is_active',)
+
     fieldsets = (
-        (_('Personal info'), {'fields': ('full_name', 'email', 'username', 'password',)}),
-        (_('Status info'), {'fields': ('is_active', 'is_staff')}),
+        (None, {'fields': ('email', 'password', 'username',)}),
+        (_('Personal info'), {'fields': ('full_name', 'phone', 'date_of_birth')}),
+        (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser', )}),
+        (_('Important dates'), {'fields': ('last_login', 'created_date', 'modified_date', )})
     )
+    search_fields = ('full_name', 'email', )
+
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('email', 'password1', 'password2', )
+        }),
+    )
+
+    ordering = ('email', )
+    readonly_fields = ('created_date', 'modified_date', )
+
+# class UserAdmin(admin.ModelAdmin):
+#     fieldsets = (
+#         (None, {'fields': ('email', 'username', 'password')}),
+#         (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser', )}),
+#     )
 
 class BranchAdmin(admin.ModelAdmin):
     list_display = ('name', 'address', 'ifsc_code')
@@ -59,6 +82,6 @@ class LoanDetailsAdmin(admin.ModelAdmin):
 admin.site.register(LoanDetail, LoanDetailsAdmin)
 admin.site.register(Branch, BranchAdmin)
 admin.site.register(Pincode, PincodeAdmin)
-admin.site.register(User, UserAdmin)
+admin.site.register(User, AppUserAdmin)
 admin.site.site_title = 'eMaps Admin'
 admin.site.site_header = 'eMaps Admin'

@@ -20,7 +20,8 @@ class Login(APIView, ResponseViewMixin):
         if serializer.is_valid():
             return self.jp_response(s_code='HTTP_200_OK', data={'user': serializer.data})
         else:
-            return self.jp_response(s_code='HTTP_400_OK', data={'user': serializer.data})
+            return self.jp_error_response('HTTP_400_BAD_REQUEST', 'INVALID_LOGIN',
+                                          self.error_msg_list(serializer.errors))
 
 
 class Loan(APIView, ResponseViewMixin):

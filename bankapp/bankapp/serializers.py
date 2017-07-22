@@ -7,9 +7,30 @@ import django.contrib.auth.password_validation as validators
 from rest_framework import serializers
 
 class UserSerializer(serializers.ModelSerializer):
+
+    authentication_token = serializers.CharField(read_only=True)
+    username = serializers.CharField(required=True, allow_blank=False, write_only=True)
+    password = serializers.CharField(required=True, allow_blank=False, write_only=True)
+
     class Meta:
         model = User
-        fields = ('full_name', 'email',)
+        fields = ('username', 'password', 'authentication_token')
+
+
+    def validate(self, data):
+        user = authenticate(username=data.get('username'), password=data.get('password'))
+        if user is not None:
+            # the password verified for the user
+            if user.is_active:
+                (token, created) = Token.objects.get_or_create(user=user)  # token.key has the key
+                user.authentication_token = token.key
+                update_last_login(None, user=user)
+                return user
+            else:
+                raise serializers.ValidationError("Account is not active. Contact support!")
+        else:
+            raise serializers.ValidationError("The username/password is incorrect.")
+
 
 class LoanSerializer(serializers.ModelSerializer):
 
