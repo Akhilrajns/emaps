@@ -46,13 +46,15 @@ class UpdateLatLong(APIView, ResponseViewMixin):
         serializer = LatLongSerializer(data=request.data)
         if serializer.is_valid():
             data = serializer.data
-            UserAddress = LoanUserAddress.objects.get(pk=data['id'])
-            UserAddress.latitude = data['latitude']
-            UserAddress.longitude = data['longitude']
-            UserAddress.verified = True
-            UserAddress.save()
-
-            return self.jp_response(s_code='HTTP_200_OK', data={'user': serializer.data})
+            try:
+                UserAddress = LoanUserAddress.objects.get(pk=data['id'])
+                UserAddress.latitude = data['latitude']
+                UserAddress.longitude = data['longitude']
+                UserAddress.verified = True
+                UserAddress.save()
+                return self.jp_response(s_code='HTTP_200_OK', data={'user': serializer.data})
+            except Exception:
+                return self.jp_response(s_code='HTTP_400_BAD_REQUEST', data={'user': 'No record exists.'})
         else:
             return self.jp_response(s_code='HTTP_400_BAD_REQUEST', data={'user': serializer.errors})
 
