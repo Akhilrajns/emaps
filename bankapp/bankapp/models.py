@@ -136,11 +136,11 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class Pincode(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    pincode = models.IntegerField('Pincode', null=False)
+    pincode = models.CharField('Pincode', null=False, max_length=10)
     name = models.CharField('Place', max_length=128)
 
     def __str__(self):
-        return str(self.pincode)
+        return '%s - %s' % (self.pincode, self.name)
 
 
 class Branch(models.Model):
@@ -188,7 +188,7 @@ class LoanDetail(models.Model):
         verbose_name_plural = "Loan Details"
 
     def __str__(self):
-        return self.customer_name
+        return 'New Loan details added'
 
 
 class AddressType(models.Model):
@@ -232,9 +232,12 @@ class LoanUserAddress(models.Model):
         return self.house_name
 
     def save(self, *args, **kwargs):
-        userpincode = Pincode.objects.get(pincode=str(self.pincode))
-        self.address_verifier = User.objects.get(pk=userpincode.user_id)
-        super(LoanUserAddress , self).save(*args, **kwargs)
+        try:
+            userpincode = Pincode.objects.get(pincode=str(self.pincode))
+            self.address_verifier = User.objects.get(pk=userpincode.user_id)
+            super(LoanUserAddress , self).save(*args, **kwargs)
+        except Exception as e:
+            print(e)
 
 
 class Review(models.Model):
