@@ -74,3 +74,13 @@ class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
         fields = ('__all__')
+
+
+class LoanAddressSerializer(serializers.ModelSerializer):
+
+    address = AddressSerializer(read_only=True)
+
+    class Meta:
+        model = LoanDetail
+        fields = ('loan_account_no', 'customer_name', 'address')
+                        

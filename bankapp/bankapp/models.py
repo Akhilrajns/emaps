@@ -151,6 +151,10 @@ class Branch(models.Model):
     pincode = models.CharField('Pincode', max_length=6)
     ifsc_code = models.CharField('IFSC code', max_length=12)
 
+    class Meta:
+        verbose_name = "Branch"
+        verbose_name_plural = "Branches"
+
     def __str__(self):
         return '%s - %s - %s' % (self.name, self.address, self.ifsc_code)
 
@@ -179,14 +183,25 @@ class LoanDetail(models.Model):
     modified_date = models.DateTimeField('Modified Date', auto_now=True)
     branch = models.ForeignKey('Branch')
 
+    class Meta:
+        verbose_name = "Loan Detail"
+        verbose_name_plural = "Loan Details"
+
     def __str__(self):
         return self.customer_name
 
 
+class AddressType(models.Model):
+    address_type = models.CharField('Address Type', max_length=128)
+
+    def __str__(self):
+        return str(self.address_type)
+
+
 class LoanUserAddress(models.Model):
 
-    loan = models.ForeignKey('LoanDetail')
-    address_type = models.IntegerField('Address type', choices=ADDRESS_TYPE, default=0, db_index=True)
+    loan = models.ForeignKey(LoanDetail, on_delete=models.CASCADE)
+    address_type = models.ForeignKey(AddressType)
     house_name = models.CharField('House/Flat/Name', max_length=128)
     street = models.CharField('Street', max_length=128)
     area = models.CharField('Area/Location', max_length=128)
@@ -199,7 +214,7 @@ class LoanUserAddress(models.Model):
     pincode = models.ForeignKey('Pincode')
     latitude = models.CharField('Latitude', blank=True, max_length=128)
     longitude = models.CharField('Longitude', blank=True, max_length=128)
-    mark_borders = models.CharField('Mark borders', blank=True, max_length=256)
+    mark_borders = models.CharField('Mark borders', blank=True, max_length=600)
     telephone = models.CharField('Telephone', max_length=128)
     mobile_primary = models.CharField('Mobile Primary', max_length=128)
     mobile_secondary = models.CharField('Mobile Secondary',blank=True, max_length=128)
@@ -207,9 +222,19 @@ class LoanUserAddress(models.Model):
     created_date = models.DateTimeField('Created Date', auto_now_add=True)
     modified_date = models.DateTimeField('Modified Date', auto_now=True)
     verified = models.BooleanField('Verified', default=False, db_index=True)
+    address_verifier = models.ForeignKey(User)
+
+    class Meta:
+        verbose_name = "Address"
+        verbose_name_plural = "Addresses"
 
     def __str__(self):
         return self.house_name
+
+    def save(self, *args, **kwargs):
+        userpincode = Pincode.objects.get(pincode=str(self.pincode))
+        self.address_verifier = User.objects.get(pk=userpincode.user_id)
+        super(LoanUserAddress , self).save(*args, **kwargs)
 
 
 class Review(models.Model):

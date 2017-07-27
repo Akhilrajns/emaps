@@ -2,11 +2,11 @@ from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import UserCreationForm
-from bankapp.models import LoanDetail, LoanUserAddress, Branch, Review, Document, Pincode, User
+from bankapp.models import LoanDetail, LoanUserAddress, Branch, Review, Document, Pincode, User, AddressType
 
 class AddressAdmin(admin.TabularInline):
     model = LoanUserAddress
-    readonly_fields = ('verified',)
+    readonly_fields = ('verified', 'address_verifier')
     max_num = 10
     extra = 0
     min_num = 1
@@ -76,12 +76,31 @@ class LoanDetailsAdmin(admin.ModelAdmin):
     search_fields = ('job_no', 'applicant_type', 'loan_account_no')
 
     ordering = ('id', )
-    readonly_fields = ('created_date', 'modified_date', ) 
+    readonly_fields = ('created_date', 'modified_date', )
+
+class UserAddressAdmin(admin.ModelAdmin):
+    list_display = ('address_type', 'house_name', 'street', 'area')
+
+    fieldsets = (
+        (_('Loan Linked to '), {'fields': ('loan',)}),
+        (_('Address Verified by '), {'fields': ('address_verifier',)}),
+        (_('Address'), {'fields': ('address_type', 'house_name', 'street', 'area', 'landmark')}),
+        (_('Location'), {'fields': ('city', 'state', 'village', 'thaluk', 'survey_no', 'pincode')}),
+        (_('Map cordinates'), {'fields': ('latitude', 'longitude', 'mark_borders')}),
+        (_('Contact details'), {'fields': ('telephone', 'mobile_primary', 'mobile_secondary', 'email',)}),
+    )
+
+    readonly_fields = ('address_verifier', 'verified')
 
 
+class AddressTypeAdmin(admin.ModelAdmin):
+    list_display = ('address_type',)    
+
+admin.site.register(AddressType, AddressTypeAdmin)
 admin.site.register(LoanDetail, LoanDetailsAdmin)
 admin.site.register(Branch, BranchAdmin)
 admin.site.register(Pincode, PincodeAdmin)
 admin.site.register(User, AppUserAdmin)
+admin.site.register(LoanUserAddress, UserAddressAdmin)
 admin.site.site_title = 'eMaps Admin'
 admin.site.site_header = 'eMaps Admin'

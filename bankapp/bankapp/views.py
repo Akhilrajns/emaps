@@ -10,8 +10,9 @@ from datetime import date
 from django.core.mail import EmailMessage
 from django.template.loader import get_template
 from django.template import Context
-from bankapp.serializers import UserSerializer, LoanSerializer, AddressSerializer, LatLongSerializer
-from bankapp.models import LoanDetail, LoanUserAddress
+from bankapp.serializers import UserSerializer, LoanSerializer, AddressSerializer, LatLongSerializer, LoanAddressSerializer
+from bankapp.models import LoanDetail, LoanUserAddress, User
+from rest_framework.authtoken.models import Token
 
 class Login(APIView, ResponseViewMixin):
 
@@ -33,9 +34,17 @@ class Loan(APIView, ResponseViewMixin):
 
 
 class AddressList(APIView, ResponseViewMixin):
+    queryset = User.objects.all()
+    authentication_classes = (TokenAuthentication,)
 
     def get(self, request, *args, **kwargs):
-        address = LoanUserAddress.objects.filter(verified=False)
+        try:
+            token = kwargs['token'];
+            token = Token.objects.get(pk=token)
+        except Exception as e:
+            return self.jp_error_response('HTTP_400_BAD_REQUEST', 'INVALID_UPDATE', str(e))
+        
+        address = LoanUserAddress.objects.filter(verified=False, address_verifier_id=token.user_id)
         serializer = AddressSerializer(address, many=True)
         return self.jp_response(s_code='HTTP_200_OK', data={'user': serializer.data})
 
@@ -59,4 +68,12 @@ class UpdateLatLong(APIView, ResponseViewMixin):
             return self.jp_response(s_code='HTTP_400_BAD_REQUEST', data={'user': serializer.errors})
 
 
+class SearchLoan(APIView, ResponseViewMixin):
 
+    def get(self, request, *args, **kwargs):
+        loan = kwargs['loan'];
+        address = LoanDetail.objects.filter(loan_account_no__in=[loan])
+        print(loan)
+        serializer = LoanAddressSerializer(address, many=True)
+        return self.jp_response(s_code='HTTP_200_OK', data={'user': serializer.data})
+        
