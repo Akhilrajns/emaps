@@ -140,7 +140,7 @@ class Pincode(models.Model):
     name = models.CharField('Place', max_length=128)
 
     def __str__(self):
-        return self.pincode
+        return str(self.pincode)
 
 
 class Branch(models.Model):
