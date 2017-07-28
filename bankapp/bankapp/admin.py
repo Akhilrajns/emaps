@@ -79,7 +79,7 @@ class LoanDetailsAdmin(admin.ModelAdmin):
     readonly_fields = ('created_date', 'modified_date', )
 
 class UserAddressAdmin(admin.ModelAdmin):
-    list_display = ('address_type', 'house_name', 'street', 'area')
+    list_display = ('address_type', 'house_name', 'street', 'area', 'address_verifier', 'verified')
 
     fieldsets = (
         (_('Loan Linked to '), {'fields': ('loan',)}),

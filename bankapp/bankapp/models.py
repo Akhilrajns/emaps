@@ -140,7 +140,7 @@ class Pincode(models.Model):
     name = models.CharField('Place', max_length=128)
 
     def __str__(self):
-        return '%s - %s' % (self.pincode, self.name)
+        return self.pincode
 
 
 class Branch(models.Model):
@@ -188,7 +188,7 @@ class LoanDetail(models.Model):
         verbose_name_plural = "Loan Details"
 
     def __str__(self):
-        return 'New Loan details added'
+        return self.customer_name
 
 
 class AddressType(models.Model):
