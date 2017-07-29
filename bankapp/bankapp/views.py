@@ -44,9 +44,9 @@ class AddressList(APIView, ResponseViewMixin):
         except Exception as e:
             return self.jp_error_response('HTTP_400_BAD_REQUEST', 'INVALID_UPDATE', str(e))
         
-        address = LoanUserAddress.objects.filter(verified=False, address_verifier_id=token.user_id)
+        address = LoanUserAddress.objects.filter(verified=False, pincode__user=token.user_id)
         serializer = AddressSerializer(address, many=True)
-        return self.jp_response(s_code='HTTP_200_OK', data={'user': serializer.data})
+        return self.jp_response(s_code='HTTP_200_OK', data=serializer.data)
 
 
 class UpdateLatLong(APIView, ResponseViewMixin):
