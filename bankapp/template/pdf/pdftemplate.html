@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<title>Loan PDF</title>
 <style>
 table {
     font-family: arial, sans-serif;
@@ -17,7 +18,12 @@ td, th {
 </style>
 </head>
 <body>
+
 <table>
+  <tr>
+    <td><b>Job Number</b></td>
+    <td>{{ job_no }}</td>
+  </tr>
   <tr>
     <td><b>Customer Name</b></td>
     <td>{{ customer_name }}</td>
@@ -44,7 +50,7 @@ td, th {
   </tr>
     <tr>
     <td><b>Loan type</b></td>
-    <td>{{ loan_type }}</td>
+    <td>{{ loan_type.loan_type }}</td>
   </tr>
     <tr>
     <td><b>Gender</b></td>
@@ -71,13 +77,12 @@ td, th {
     <td>{{ resident }}</td>
   </tr>
   </table>
-  
 
   {% for key in address %}
   <br/><br/>
   <table>
   <tr>
-    <td colspan="2" align="center"><b>Address</b></td>
+    <td colspan="2" align="center"><b>{{key.address_type.address_type}}</b></td>
   </tr>
   <tr>
     <td><b>House name</b></td>
@@ -130,6 +135,10 @@ td, th {
   <tr>
     <td><b>Email</b></td>
     <td>{{key.email}}</td>
+  </tr>
+    <tr>
+    <td><b>Verifier</b></td>
+    <td>{{key.address_verifier.full_name}}</td>
   </tr>
   </table>
   {% endfor %}

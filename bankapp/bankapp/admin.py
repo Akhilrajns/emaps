@@ -2,11 +2,11 @@ from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import UserCreationForm
-from bankapp.models import LoanDetail, LoanUserAddress, Branch, Review, Document, Pincode, User, AddressType
+from bankapp.models import LoanDetail, LoanUserAddress, Branch, Review, Document, Pincode, User, AddressType, LoanType
 
 class AddressAdmin(admin.TabularInline):
     model = LoanUserAddress
-    readonly_fields = ('verified', 'address_verifier')
+    readonly_fields = ('verified', 'address_verifier', 'latitude', 'longitude', 'mark_borders')
     max_num = 10
     extra = 0
     min_num = 1
@@ -22,6 +22,12 @@ class DocumentsAdmin(admin.TabularInline):
     max_num = 10
     extra = 0
     min_num = 1
+
+class PincodeAdmin(admin.TabularInline):
+    model = Pincode
+    max_num = 100
+    extra = 0
+    min_num = 0
 
 class AppUserAdmin(UserAdmin):
     add_form = UserCreationForm
@@ -42,6 +48,10 @@ class AppUserAdmin(UserAdmin):
         }),
     )
 
+    inlines = [
+        PincodeAdmin
+    ]
+
     ordering = ('email', )
     readonly_fields = ('created_date', 'modified_date', )
 
@@ -60,13 +70,13 @@ class PincodeAdmin(admin.ModelAdmin):
 
 
 class LoanDetailsAdmin(admin.ModelAdmin):
-    list_display = ('customer_name', 'job_no', 'job_status', 'applicant_type')
+    list_display = ('customer_name', 'job_no', 'loan_account_no', 'job_status', 'applicant_type')
 
     fieldsets = (
         (_('Personal info'), {'fields': ('job_no', 'loan_account_no', 'loan_type', 'job_status', 'applicant_type')}),
         (_('Status info'), {'fields': ('customer_name', 'father_name', 'mother_name', 'spouse_name', 'martial_status')}),
-        (_('Permissions'), {'fields': ('nationality', 'resident', )}),
-        (_('Important dates'), {'fields': ('dob', 'sex', 'kyc_status', 'job_type', 'gross_annual_income', 'political_influence' )}),
+        (_('Permissions'), {'fields': ('nationality', 'resident', 'created_by')}),
+        (_('Important datas'), {'fields': ('dob', 'sex', 'kyc_status', 'job_type', 'gross_annual_income', 'political_influence' )}),
         (_('Branch'), {'fields': ('branch',)}),
     )
 
@@ -75,8 +85,14 @@ class LoanDetailsAdmin(admin.ModelAdmin):
     ]
     search_fields = ('job_no', 'applicant_type', 'loan_account_no')
 
-    ordering = ('id', )
-    readonly_fields = ('created_date', 'modified_date', )
+    ordering = ('job_no', )
+    readonly_fields = ('created_date', 'modified_date', 'job_no', 'created_by')
+
+    def save_model(self, request, obj, form, change):
+        if not change:
+            obj.created_by = request.user
+        obj.save()
+
 
 class UserAddressAdmin(admin.ModelAdmin):
     list_display = ('address_type', 'house_name', 'street', 'area', 'address_verifier', 'verified')
@@ -94,8 +110,14 @@ class UserAddressAdmin(admin.ModelAdmin):
 
 
 class AddressTypeAdmin(admin.ModelAdmin):
-    list_display = ('address_type',)    
+    list_display = ('id', 'address_type',)   
 
+
+class LoanTypeAdmin(admin.ModelAdmin):
+    list_display = ('id', 'loan_type',)    
+
+
+admin.site.register(LoanType, LoanTypeAdmin)
 admin.site.register(AddressType, AddressTypeAdmin)
 admin.site.register(LoanDetail, LoanDetailsAdmin)
 admin.site.register(Branch, BranchAdmin)

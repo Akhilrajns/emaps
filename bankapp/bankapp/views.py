@@ -10,7 +10,7 @@ from datetime import date
 from django.core.mail import EmailMessage
 from django.template.loader import get_template
 from django.template import Context
-from bankapp.serializers import UserSerializer, LoanSerializer, AddressSerializer, LatLongSerializer, LoanAddressSerializer
+from bankapp.serializers import UserSerializer, LoanSerializer, AddressSerializer, LatLongSerializer, LoanSerializer
 from bankapp.models import LoanDetail, LoanUserAddress, User
 from rest_framework.authtoken.models import Token
 
@@ -71,9 +71,17 @@ class UpdateLatLong(APIView, ResponseViewMixin):
 class SearchLoan(APIView, ResponseViewMixin):
 
     def get(self, request, *args, **kwargs):
-        loan = kwargs['loan'];
-        address = LoanDetail.objects.filter(loan_account_no__in=[loan])
-        print(loan)
-        serializer = LoanAddressSerializer(address, many=True)
-        return self.jp_response(s_code='HTTP_200_OK', data={'user': serializer.data})
+        loan = kwargs['loan'].split(',');
+        result = []
+        loans = LoanDetail.objects.filter(loan_account_no__in=loan)
+        for loan in loans:
+            serializer = LoanSerializer(loan)
+            job_no = serializer.data['job_no']
+            addresses = LoanUserAddress.objects.filter(loan=job_no, verified=True)
+            if addresses.exists():
+                address = AddressSerializer(addresses, many=True)
+                new_data = serializer.data
+                new_data['addresses'] = address.data
+                result.append(new_data)
+        return self.jp_response(s_code='HTTP_200_OK', data=result)
         

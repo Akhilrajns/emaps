@@ -47,11 +47,6 @@ ANNUAL_INCOME = (
     (3, 'Above 5 lakh'),
 )
 
-LOAN_TYPE = (
-    (1, 'Home loan'),
-    (2, 'Car Loan'),
-)
-
 ADDRESS_TYPE = (
     (0, 'Select'),
     (1, 'Permenent Address'),
@@ -121,8 +116,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = []
 
     class Meta:
-        verbose_name = 'user'
-        verbose_name_plural = 'users'
+        verbose_name = 'User'
+        verbose_name_plural = 'Users'
 
     def __str__(self):
         return self.username
@@ -159,11 +154,22 @@ class Branch(models.Model):
         return '%s - %s - %s' % (self.name, self.address, self.ifsc_code)
 
 
+class LoanType(models.Model):
+    loan_type = models.CharField('Loan Type', max_length=128)
+
+    class Meta:
+        verbose_name = 'Loan type'
+        verbose_name_plural = 'Loan Types'
+
+    def __str__(self):
+        return str(self.loan_type)        
+
+
 class LoanDetail(models.Model):
     """docstring for LoanDetails"""
-    job_no = models.CharField('Job No', blank=True, max_length=128)
+    job_no = models.AutoField('Job No', primary_key=True)
     loan_account_no = models.CharField('Loan account No', blank=True, max_length=128)
-    loan_type = models.IntegerField('Loan type', choices=LOAN_TYPE, default=1, db_index=True)
+    loan_type = models.ForeignKey(LoanType)
     job_status = models.IntegerField('Job Status', choices=JOB_STATUS, default=1, db_index=True)
     applicant_type = models.IntegerField('Applicant type', choices=APPLICANT_TYPE, default=1, db_index=True)
     customer_name = models.CharField('Customer Name', max_length=128)
@@ -180,6 +186,7 @@ class LoanDetail(models.Model):
     gross_annual_income = models.IntegerField('Job type', choices=ANNUAL_INCOME, default=1, db_index=True)
     political_influence = models.CharField('Political Influenze', max_length=600, null=True, blank=True)
     created_date = models.DateTimeField('Created Date', auto_now_add=True)
+    created_by = models.ForeignKey(User)
     modified_date = models.DateTimeField('Modified Date', auto_now=True)
     branch = models.ForeignKey('Branch')
 
@@ -200,7 +207,7 @@ class AddressType(models.Model):
 
 class LoanUserAddress(models.Model):
 
-    loan = models.ForeignKey(LoanDetail, on_delete=models.CASCADE)
+    loan = models.ForeignKey(LoanDetail, on_delete=models.CASCADE, related_name="loanuser")
     address_type = models.ForeignKey(AddressType)
     house_name = models.CharField('House/Flat/Name', max_length=128)
     street = models.CharField('Street', max_length=128)
@@ -222,7 +229,7 @@ class LoanUserAddress(models.Model):
     created_date = models.DateTimeField('Created Date', auto_now_add=True)
     modified_date = models.DateTimeField('Modified Date', auto_now=True)
     verified = models.BooleanField('Verified', default=False, db_index=True)
-    address_verifier = models.ForeignKey(User)
+    address_verifier = models.ForeignKey(User, null=True, blank=True, related_name='loanuseraddress')
 
     class Meta:
         verbose_name = "Address"

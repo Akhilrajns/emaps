@@ -40,6 +40,7 @@ class LoanSerializer(serializers.ModelSerializer):
          'customer_name', 'father_name', 'mother_name', 'spouse_name', 'martial_status',
          'nationality', 'resident', 'dob', 'sex', 'kyc_status', 'job_type', 'gross_annual_income',
          'political_influence', 'created_date', 'modified_date')
+        depth = 1
 
 
 class AddressSerializer(serializers.ModelSerializer):
@@ -48,7 +49,8 @@ class AddressSerializer(serializers.ModelSerializer):
         model = LoanUserAddress
         fields = ('id', 'address_type', 'house_name', 'street', 'area', 'landmark', 'city', 'state', 'village',
             'thaluk', 'survey_no', 'telephone', 'mobile_primary', 'mobile_secondary', 'email',
-            'created_date', 'latitude', 'longitude', 'verified')
+            'created_date', 'latitude', 'longitude', 'verified', 'address_verifier')
+        depth = 1
 
 
 class LatLongSerializer(serializers.ModelSerializer):
@@ -76,11 +78,8 @@ class ReviewSerializer(serializers.ModelSerializer):
         fields = ('__all__')
 
 
-class LoanAddressSerializer(serializers.ModelSerializer):
-
-    address = AddressSerializer(read_only=True)
+class LoanSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = LoanDetail
-        fields = ('loan_account_no', 'customer_name', 'address')
-                        
+        fields = ('loan_account_no', 'customer_name', 'job_no')

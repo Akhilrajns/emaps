@@ -20,11 +20,9 @@ class MyPDFView(View):
         serializedAddress = AddressSerializer(address, many=True)
         serializedDocs = DocumentSerializer(documents, many=True)
         serializedReviews = ReviewSerializer(reviews, many=True)
-        #print(serializedReviews)
         serializerData = serializer.data
         serializerData['sex'] = loanDetail.get_sex_display()
         serializerData['job_type'] = loanDetail.get_job_type_display()
-        serializerData['loan_type'] = loanDetail.get_loan_type_display()
         serializerData['job_status'] = loanDetail.get_job_status_display()
         serializerData['applicant_type'] = loanDetail.get_applicant_type_display()
         serializerData['martial_status'] = loanDetail.get_martial_status_display()
