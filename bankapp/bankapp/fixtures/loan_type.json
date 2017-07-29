@@ -1,0 +1,37 @@
+[
+    {
+    "model": "bankapp.loantype",
+    "pk": 1,
+    "fields": {
+        "loan_type": "Personal Loan"
+    }
+    },
+    {
+    "model": "bankapp.loantype",
+    "pk": 2,
+    "fields": {
+        "loan_type": "Car Loan"
+        }
+    },
+    {
+    "model": "bankapp.loantype",
+    "pk": 3,
+    "fields": {
+        "loan_type": "Bussiness Loan"
+        }
+    },
+    {
+    "model": "bankapp.loantype",
+    "pk": 4,
+    "fields": {
+        "loan_type": "Property Loan"
+        }
+    },
+    {
+    "model": "bankapp.loantype",
+    "pk": 5,
+    "fields": {
+        "loan_type": "Housing Loan"
+        }
+    }
+]

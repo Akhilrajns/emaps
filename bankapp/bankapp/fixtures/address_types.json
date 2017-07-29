@@ -1,0 +1,23 @@
+[
+    {
+    "model": "bankapp.addresstype",
+    "pk": 1,
+    "fields": {
+        "address_type": "Permenant Address"
+    }
+    },
+    {
+    "model": "bankapp.addresstype",
+    "pk": 2,
+    "fields": {
+        "address_type": "Current Address"
+        }
+    },
+    {
+    "model": "bankapp.addresstype",
+    "pk": 3,
+    "fields": {
+        "address_type": "Bussiness Address"
+        }
+    }
+]
