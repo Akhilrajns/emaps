@@ -49,7 +49,7 @@ class AddressSerializer(serializers.ModelSerializer):
         model = LoanUserAddress
         fields = ('id', 'address_type', 'house_name', 'street', 'area', 'landmark', 'city', 'state', 'village',
             'thaluk', 'survey_no', 'telephone', 'mobile_primary', 'mobile_secondary', 'email',
-            'created_date', 'latitude', 'longitude', 'verified', 'address_verifier')
+            'created_date', 'latitude', 'longitude', 'verified', 'address_verifier', 'mark_borders')
         depth = 1
 
 
