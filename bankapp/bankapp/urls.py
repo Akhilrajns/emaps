@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from bankapp.views import Login, Loan, AddressList, UpdateLatLong, SearchLoan
+from bankapp.views import Login, Loan, AddressList, UpdateLatLong, SearchLoan, VerifiedAddressList
 from bankapp.generatepdf import MyPDFView
 from home.views import home, mobile
 from django.conf import settings
@@ -28,6 +28,7 @@ urlpatterns = [
     url(r'^api/v1/user/login/$', Login.as_view(), name='login'),
     url(r'^api/v1/user/loan/$', Loan.as_view(), name='loan'),
     url(r'^api/v1/user/address/(?P<token>[\w,]+)/$', AddressList.as_view(), name='address'),
+    url(r'^api/v1/user/verifiedaddress/(?P<token>[\w,]+)/$', VerifiedAddressList.as_view(), name='verifiedaddress'),
     url(r'^api/v1/user/search/(?P<loan>[\w,]+)/$', SearchLoan.as_view(), name='search'),
     url(r'^api/v1/user/update-address/$', UpdateLatLong.as_view(), name='update-address'),
     url(r'^admin/pdf_generate/(?P<pk>[0-9]+)/$', MyPDFView.as_view(), name='pdf_generate')

@@ -106,7 +106,7 @@ class UserAddressAdmin(admin.ModelAdmin):
         (_('Contact details'), {'fields': ('telephone', 'mobile_primary', 'mobile_secondary', 'email',)}),
     )
 
-    readonly_fields = ('address_verifier', 'verified')
+    readonly_fields = ('address_verifier', 'verified', 'latitude', 'longitude', 'mark_borders')
 
 
 class AddressTypeAdmin(admin.ModelAdmin):

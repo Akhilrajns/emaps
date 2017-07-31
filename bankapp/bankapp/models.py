@@ -131,11 +131,11 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class Pincode(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    pincode = models.CharField('Pincode', null=False, max_length=10)
+    pincode = models.CharField('Pincode', null=False, max_length=10, unique=True, blank=False)
     name = models.CharField('Place', max_length=128)
 
     def __str__(self):
-        return str(self.pincode)
+        return self.pincode
 
 
 class Branch(models.Model):
@@ -222,8 +222,8 @@ class LoanUserAddress(models.Model):
     latitude = models.CharField('Latitude', blank=True, max_length=128)
     longitude = models.CharField('Longitude', blank=True, max_length=128)
     mark_borders = models.CharField('Mark borders', blank=True, max_length=600)
-    telephone = models.CharField('Telephone', max_length=128)
-    mobile_primary = models.CharField('Mobile Primary', max_length=128)
+    telephone = models.CharField('Telephone', max_length=128, blank=True)
+    mobile_primary = models.CharField('Mobile Primary', max_length=128, blank=True)
     mobile_secondary = models.CharField('Mobile Secondary',blank=True, max_length=128)
     email = models.CharField('Email', blank=True, max_length=128)
     created_date = models.DateTimeField('Created Date', auto_now_add=True)

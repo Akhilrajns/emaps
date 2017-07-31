@@ -49,6 +49,22 @@ class AddressList(APIView, ResponseViewMixin):
         return self.jp_response(s_code='HTTP_200_OK', data=serializer.data)
 
 
+class VerifiedAddressList(APIView, ResponseViewMixin):
+    queryset = User.objects.all()
+    authentication_classes = (TokenAuthentication,)
+
+    def get(self, request, *args, **kwargs):
+        try:
+            token = kwargs['token'];
+            token = Token.objects.get(pk=token)
+        except Exception as e:
+            return self.jp_error_response('HTTP_400_BAD_REQUEST', 'INVALID_UPDATE', str(e))
+        
+        address = LoanUserAddress.objects.filter(verified=True, pincode__user=token.user_id)
+        serializer = AddressSerializer(address, many=True)
+        return self.jp_response(s_code='HTTP_200_OK', data=serializer.data)
+
+
 class UpdateLatLong(APIView, ResponseViewMixin):
 
     def post(self, request, *args, **kwargs):
