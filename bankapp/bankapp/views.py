@@ -10,8 +10,8 @@ from datetime import date
 from django.core.mail import EmailMessage
 from django.template.loader import get_template
 from django.template import Context
-from bankapp.serializers import UserSerializer, LoanSerializer, AddressSerializer, LatLongSerializer, LoanSerializer
-from bankapp.models import LoanDetail, LoanUserAddress, User
+from bankapp.serializers import UserSerializer, LoanSerializer, AddressSerializer, LatLongSerializer, LoanSerializer, AddressTypeSerializer
+from bankapp.models import LoanDetail, LoanUserAddress, User, AddressType
 from rest_framework.authtoken.models import Token
 
 class Login(APIView, ResponseViewMixin):
@@ -88,16 +88,29 @@ class SearchLoan(APIView, ResponseViewMixin):
 
     def get(self, request, *args, **kwargs):
         loan = kwargs['loan'].split(',');
+        addresstype = kwargs['addresstype']
         result = []
         loans = LoanDetail.objects.filter(loan_account_no__in=loan)
         for loan in loans:
             serializer = LoanSerializer(loan)
             job_no = serializer.data['job_no']
-            addresses = LoanUserAddress.objects.filter(loan=job_no, verified=True)
+            if addresstype != 0:
+                addresses = LoanUserAddress.objects.filter(loan=job_no, address_type=addresstype, verified=True)
+            else:
+                addresses = LoanUserAddress.objects.filter(loan=job_no, verified=True)
+
             if addresses.exists():
                 address = AddressSerializer(addresses, many=True)
                 new_data = serializer.data
                 new_data['addresses'] = address.data
                 result.append(new_data)
         return self.jp_response(s_code='HTTP_200_OK', data=result)
-        
+
+
+class AddressTyes(APIView, ResponseViewMixin):
+
+    def get(self, request, *args, **kwargs):
+        addresstypes = AddressType.objects.all()
+        serializer = AddressTypeSerializer(addresstypes, many= True)
+        return self.jp_response(s_code='HTTP_200_OK', data=serializer.data)
+
