@@ -94,11 +94,10 @@ class SearchLoan(APIView, ResponseViewMixin):
         for loan in loans:
             serializer = LoanSerializer(loan)
             job_no = serializer.data['job_no']
-            if addresstype != 0:
+            if addresstype != '0':
                 addresses = LoanUserAddress.objects.filter(loan=job_no, address_type=addresstype, verified=True)
             else:
                 addresses = LoanUserAddress.objects.filter(loan=job_no, verified=True)
-
             if addresses.exists():
                 address = AddressSerializer(addresses, many=True)
                 new_data = serializer.data
