@@ -75,6 +75,7 @@ class UpdateLatLong(APIView, ResponseViewMixin):
                 UserAddress = LoanUserAddress.objects.get(pk=data['id'])
                 UserAddress.latitude = data['latitude']
                 UserAddress.longitude = data['longitude']
+                UserAddress.mark_borders = data['mark_borders']
                 UserAddress.verified = True
                 UserAddress.save()
                 return self.jp_response(s_code='HTTP_200_OK', data={'user': serializer.data})
